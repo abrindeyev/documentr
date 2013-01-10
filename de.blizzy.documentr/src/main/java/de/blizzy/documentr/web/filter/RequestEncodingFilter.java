@@ -1,6 +1,6 @@
 /*
 documentr - Edit, maintain, and present software documentation on the web.
-Copyright (C) 2012 Maik Schreiber
+Copyright (C) 2012-2013 Maik Schreiber
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -40,7 +40,7 @@ public class RequestEncodingFilter implements Filter {
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
-		
+
 		request.setCharacterEncoding(Charsets.UTF_8.name());
 		response.setCharacterEncoding(Charsets.UTF_8.name());
 		chain.doFilter(request, response);

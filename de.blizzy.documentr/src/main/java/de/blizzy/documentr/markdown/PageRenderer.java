@@ -1,6 +1,6 @@
 /*
 documentr - Edit, maintain, and present software documentation on the web.
-Copyright (C) 2012 Maik Schreiber
+Copyright (C) 2012-2013 Maik Schreiber
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -37,7 +37,7 @@ class PageRenderer implements IPageRenderer {
 	private IPageStore pageStore;
 	@Autowired
 	private MarkdownProcessor markdownProcessor;
-	
+
 	@Override
 	public String getHtml(String projectName, String branchName, String path, Authentication authentication,
 			String contextPath) throws IOException {
@@ -46,7 +46,7 @@ class PageRenderer implements IPageRenderer {
 			log.info("rendering page {}/{}/{} for user {}", //$NON-NLS-1$
 					projectName, branchName, Util.toUrlPagePath(path), authentication.getName());
 		}
-		
+
 		Page page = pageStore.getPage(projectName, branchName, path, true);
 		String markdown = ((PageTextData) page.getData()).getText();
 		return markdownProcessor.markdownToHtml(markdown, projectName, branchName, path, authentication, contextPath);

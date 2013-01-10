@@ -1,6 +1,6 @@
 /*
 documentr - Edit, maintain, and present software documentation on the web.
-Copyright (C) 2012 Maik Schreiber
+Copyright (C) 2012-2013 Maik Schreiber
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -51,7 +51,7 @@ public class AuthenticationCreationTimeFilter implements Filter {
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
-		
+
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		int hashCode = getHashCode(authentication);
 
@@ -61,7 +61,7 @@ public class AuthenticationCreationTimeFilter implements Filter {
 			session.setAttribute(AUTHENTICATION_HASH_CODE, hashCode);
 			AuthenticationUtil.setAuthenticationCreationTime(session, System.currentTimeMillis());
 		}
-		
+
 		chain.doFilter(request, response);
 	}
 

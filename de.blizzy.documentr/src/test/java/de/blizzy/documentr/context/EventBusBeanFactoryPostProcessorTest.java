@@ -1,6 +1,6 @@
 /*
 documentr - Edit, maintain, and present software documentation on the web.
-Copyright (C) 2012 Maik Schreiber
+Copyright (C) 2012-2013 Maik Schreiber
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -31,12 +31,12 @@ import de.blizzy.documentr.AbstractDocumentrTest;
 public class EventBusBeanFactoryPostProcessorTest extends AbstractDocumentrTest {
 	@Mock
 	private ConfigurableListableBeanFactory beanFactory;
-	
+
 	@Test
 	public void postProcessBeanFactory() {
 		EventBusBeanFactoryPostProcessor beanFactoryPostProcessor = new EventBusBeanFactoryPostProcessor();
 		beanFactoryPostProcessor.postProcessBeanFactory(beanFactory);
-		
+
 		ArgumentCaptor<BeanPostProcessor> captor = ArgumentCaptor.forClass(BeanPostProcessor.class);
 		verify(beanFactory).addBeanPostProcessor(captor.capture());
 		assertTrue(captor.getValue() instanceof EventBusBeanPostProcessor);

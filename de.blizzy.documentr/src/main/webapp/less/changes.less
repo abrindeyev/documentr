@@ -1,6 +1,6 @@
 /*
 documentr - Edit, maintain, and present software documentation on the web.
-Copyright (C) 2012 Maik Schreiber
+Copyright (C) 2012-2013 Maik Schreiber
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -16,32 +16,24 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-pre {
-	&.changes {
-		background-color: inherit;
-		border: 0;
-		padding: 0;
-		
-		ins,
-		del {
-			margin-left: 2px;
-			margin-right: 2px;
-			padding-left: 2px;
-			padding-right: 2px;
-			border-radius: 2px 2px 2px 2px;
-		}
-		
-		ins {
-			background-color: #e6ffe6;
-		}
-		
-		del {
-			background-color: #ffe6e6;
-		}
-		
-		del + ins,
-		ins + del {
-			margin-left: 0px;
+.modal-header {
+	h3 {
+		&+ form {
+			margin-top: 10px;
+			margin-bottom: 0;
 		}
 	}
+}
+
+.editor-marker-insert,
+.editor-marker-delete {
+	position: absolute;
+}
+
+.editor-marker-insert {
+	background-color: #ccffcc;
+}
+
+.editor-marker-delete {
+	background-color: #ffcccc;
 }

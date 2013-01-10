@@ -1,6 +1,6 @@
 /*
 documentr - Edit, maintain, and present software documentation on the web.
-Copyright (C) 2012 Maik Schreiber
+Copyright (C) 2012-2013 Maik Schreiber
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -34,10 +34,10 @@ class MacroInvocation {
 
 	MacroInvocation(String macroName, String parameters) {
 		Assert.hasLength(macroName);
-		
+
 		this.macroName = macroName;
 		this.parameters = parameters;
-		
+
 		long random = (long) (Math.random() * Long.MAX_VALUE);
 		String markerLabel = macroName + "_" + String.valueOf(random); //$NON-NLS-1$
 		startMarker = "__" + markerLabel + "__"; //$NON-NLS-1$ //$NON-NLS-2$

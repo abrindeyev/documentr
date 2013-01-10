@@ -1,6 +1,6 @@
 /*
 documentr - Edit, maintain, and present software documentation on the web.
-Copyright (C) 2012 Maik Schreiber
+Copyright (C) 2012-2013 Maik Schreiber
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -38,7 +38,7 @@ public class GoogleDocsMacro implements IMacroRunnable {
 		String macroParams = macroContext.getParameters();
 		String googleUrl = StringUtils.substringBefore(macroParams, " ").trim(); //$NON-NLS-1$
 		String width = StringUtils.substringAfter(macroParams, " ").trim(); //$NON-NLS-1$
-		
+
 		UriComponents uriComponents = UriComponentsBuilder.fromHttpUrl(googleUrl).build();
 		String path = uriComponents.getPath();
 		MultiValueMap<String, String> params = uriComponents.getQueryParams();

@@ -1,6 +1,6 @@
 /*
 documentr - Edit, maintain, and present software documentation on the web.
-Copyright (C) 2012 Maik Schreiber
+Copyright (C) 2012-2013 Maik Schreiber
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -36,7 +36,7 @@ class SimpleMacroMacro implements IMacro {
 		Assert.hasLength(annotation.name());
 		Assert.hasLength(annotation.insertText());
 		Assert.notNull(beanFactory);
-		
+
 		this.simpleMacro = simpleMacro;
 		this.annotation = annotation;
 		this.beanFactory = beanFactory;

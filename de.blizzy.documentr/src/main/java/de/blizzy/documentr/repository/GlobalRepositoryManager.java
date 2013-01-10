@@ -1,6 +1,6 @@
 /*
 documentr - Edit, maintain, and present software documentation on the web.
-Copyright (C) 2012 Maik Schreiber
+Copyright (C) 2012-2013 Maik Schreiber
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -46,7 +46,7 @@ public class GlobalRepositoryManager {
 	@Autowired
 	private EventBus eventBus;
 	private File reposDir;
-	
+
 	@PostConstruct
 	public void init() {
 		reposDir = new File(settings.getDocumentrDataDir(), "repositories"); //$NON-NLS-1$
@@ -54,37 +54,37 @@ public class GlobalRepositoryManager {
 
 	public ILockedRepository createProjectCentralRepository(String projectName, User user)
 			throws IOException, GitAPIException {
-		
+
 		ProjectRepositoryManager repoManager = repositoryManagerFactory.getManager(reposDir, projectName);
 		return repoManager.createCentralRepository(user);
 	}
 
 	public ILockedRepository createProjectCentralRepository(String projectName, boolean bare, User user)
 			throws IOException, GitAPIException {
-		
+
 		ProjectRepositoryManager repoManager = repositoryManagerFactory.getManager(reposDir, projectName);
 		return repoManager.createCentralRepository(bare, user);
 	}
-	
+
 	public ILockedRepository getProjectCentralRepository(String projectName) throws IOException {
 		ProjectRepositoryManager repoManager = repositoryManagerFactory.getManager(reposDir, projectName);
 		return repoManager.getCentralRepository();
 	}
-	
+
 	public ILockedRepository getProjectCentralRepository(String projectName, boolean bare) throws IOException {
 		ProjectRepositoryManager repoManager = repositoryManagerFactory.getManager(reposDir, projectName);
 		return repoManager.getCentralRepository(bare);
 	}
-	
+
 	public ILockedRepository createProjectBranchRepository(String projectName, String branchName, String startingBranch)
 			throws IOException, GitAPIException {
-		
+
 		ProjectRepositoryManager repoManager = repositoryManagerFactory.getManager(reposDir, projectName);
 		ILockedRepository repo = repoManager.createBranchRepository(branchName, startingBranch);
 		eventBus.post(new BranchCreatedEvent(projectName, branchName));
 		return repo;
 	}
-	
+
 	public ILockedRepository getProjectBranchRepository(String projectName, String branchName) throws IOException, GitAPIException {
 		ProjectRepositoryManager repoManager = repositoryManagerFactory.getManager(reposDir, projectName);
 		return repoManager.getBranchRepository(branchName);
@@ -122,7 +122,7 @@ public class GlobalRepositoryManager {
 		}
 		return result;
 	}
-	
+
 	public void importSampleContents(String projectName) throws IOException, GitAPIException {
 		ProjectRepositoryManager repoManager = repositoryManagerFactory.getManager(reposDir, projectName);
 		repoManager.importSampleContents();

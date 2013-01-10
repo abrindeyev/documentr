@@ -1,6 +1,6 @@
 /*
 documentr - Edit, maintain, and present software documentation on the web.
-Copyright (C) 2012 Maik Schreiber
+Copyright (C) 2012-2013 Maik Schreiber
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -37,13 +37,13 @@ public class AlertMacroTest extends AbstractDocumentrTest {
 	public void setUp() {
 		runnable = new AlertMacro();
 	}
-	
+
 	@Test
 	public void getHtml() {
 		when(context.getBody()).thenReturn("body"); //$NON-NLS-1$
 		assertEquals("<div class=\"alert\">body</div>", runnable.getHtml(context)); //$NON-NLS-1$
 	}
-	
+
 	@Test
 	public void getHtmlWithErrorType() {
 		when(context.getParameters()).thenReturn("error"); //$NON-NLS-1$

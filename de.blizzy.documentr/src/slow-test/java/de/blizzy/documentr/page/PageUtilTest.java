@@ -1,6 +1,6 @@
 /*
 documentr - Edit, maintain, and present software documentation on the web.
-Copyright (C) 2012 Maik Schreiber
+Copyright (C) 2012-2013 Maik Schreiber
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -47,7 +47,7 @@ public class PageUtilTest extends AbstractDocumentrTest {
 
 	@Mock
 	private PageStore pageStore;
-	
+
 	@Test
 	public void getPagePathHierarchy() throws IOException {
 		Page page1 = createRandomPage(null);
@@ -56,11 +56,11 @@ public class PageUtilTest extends AbstractDocumentrTest {
 		when(pageStore.getPage(PROJECT, BRANCH, "page1", false)).thenReturn(page1); //$NON-NLS-1$
 		when(pageStore.getPage(PROJECT, BRANCH, "page1/page2", false)).thenReturn(page2); //$NON-NLS-1$
 		when(pageStore.getPage(PROJECT, BRANCH, "page1/page2/page3", false)).thenReturn(page3); //$NON-NLS-1$
-		
+
 		assertEquals(Lists.newArrayList("page1", "page1/page2", "page1/page2/page3"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				PageUtil.getPagePathHierarchy(PROJECT, BRANCH, "page1/page2/page3", pageStore)); //$NON-NLS-1$
 	}
-	
+
 	@Test
 	public void toPageVersion() throws GitAPIException, IOException {
 		File repoDir = tempDir.getRoot();
@@ -68,7 +68,7 @@ public class PageUtilTest extends AbstractDocumentrTest {
 		PersonIdent ident = new PersonIdent("user", "user@example.com"); //$NON-NLS-1$ //$NON-NLS-2$
 		git.commit().setAuthor(ident).setCommitter(ident).setMessage("test").call(); //$NON-NLS-1$
 		RevCommit commit = CommitUtils.getHead(git.getRepository());
-		
+
 		PageVersion pageVersion = PageUtil.toPageVersion(commit);
 		assertEquals("user", pageVersion.getLastEditedBy()); //$NON-NLS-1$
 		assertSecondsAgo(pageVersion.getLastEdited(), 5);

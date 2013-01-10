@@ -1,6 +1,6 @@
 /*
 documentr - Edit, maintain, and present software documentation on the web.
-Copyright (C) 2012 Maik Schreiber
+Copyright (C) 2012-2013 Maik Schreiber
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -25,7 +25,7 @@ public class CommitCherryPickResult {
 	public static enum Status {
 		OK, CONFLICT, UNKNOWN;
 	}
-	
+
 	@Getter
 	private PageVersion pageVersion;
 	@Getter
@@ -36,11 +36,11 @@ public class CommitCherryPickResult {
 	public CommitCherryPickResult(PageVersion pageVersion, Status status) {
 		Assert.notNull(pageVersion);
 		Assert.notNull(status);
-		
+
 		this.pageVersion = pageVersion;
 		this.status = status;
 	}
-	
+
 	public CommitCherryPickResult(PageVersion pageVersion, String conflictText) {
 		Assert.notNull(pageVersion);
 		Assert.notNull(conflictText);

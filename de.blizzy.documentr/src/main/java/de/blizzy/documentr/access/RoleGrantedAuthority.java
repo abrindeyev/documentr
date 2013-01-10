@@ -1,6 +1,6 @@
 /*
 documentr - Edit, maintain, and present software documentation on the web.
-Copyright (C) 2012 Maik Schreiber
+Copyright (C) 2012-2013 Maik Schreiber
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@ import org.springframework.util.Assert;
 /** An authority that grants a role on a target object. */
 public class RoleGrantedAuthority implements GrantedAuthority {
 	private static final long serialVersionUID = 4837778771482591248L;
-	
+
 	@Getter
 	private GrantedAuthorityTarget target;
 	@Getter
@@ -35,14 +35,14 @@ public class RoleGrantedAuthority implements GrantedAuthority {
 
 	/**
 	 * Constructs a new role granted authority.
-	 * 
+	 *
 	 * @param target the target object
 	 * @param roleName the name of the role being granted
 	 */
 	public RoleGrantedAuthority(GrantedAuthorityTarget target, String roleName) {
 		Assert.notNull(target);
 		Assert.hasLength(roleName);
-		
+
 		this.target = target;
 		this.roleName = roleName;
 	}
@@ -51,7 +51,7 @@ public class RoleGrantedAuthority implements GrantedAuthority {
 	public String getAuthority() {
 		return null;
 	}
-	
+
 	@Override
 	public boolean equals(Object o) {
 		if (o == this) {
@@ -65,7 +65,7 @@ public class RoleGrantedAuthority implements GrantedAuthority {
 		}
 		return false;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder()

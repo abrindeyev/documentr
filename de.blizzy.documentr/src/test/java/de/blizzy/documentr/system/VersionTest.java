@@ -1,6 +1,6 @@
 /*
 documentr - Edit, maintain, and present software documentation on the web.
-Copyright (C) 2012 Maik Schreiber
+Copyright (C) 2012-2013 Maik Schreiber
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -34,7 +34,7 @@ public class VersionTest {
 		assertEquals(3, version.getMinor());
 		assertEquals(4, version.getMaintenance());
 	}
-	
+
 	@Test
 	public void compareTo() {
 		Version version = Version.fromString("1.2.3-SNAPSHOT"); //$NON-NLS-1$

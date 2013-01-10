@@ -1,6 +1,6 @@
 /*
 documentr - Edit, maintain, and present software documentation on the web.
-Copyright (C) 2012 Maik Schreiber
+Copyright (C) 2012-2013 Maik Schreiber
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -36,7 +36,7 @@ import de.blizzy.documentr.system.SystemSettingsStore;
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 class MacroContext implements IMacroContext {
 	static final String ID = "macroContext"; //$NON-NLS-1$
-	
+
 	@Autowired
 	@Getter
 	private IPageStore pageStore;
@@ -56,13 +56,13 @@ class MacroContext implements IMacroContext {
 
 	MacroContext(String macroName, String parameters, String body, HtmlSerializerContext htmlSerializerContext) {
 		Assert.hasLength(macroName);
-		
+
 		this.macroName = macroName;
 		this.parameters = parameters;
 		this.body = body;
 		this.htmlSerializerContext = htmlSerializerContext;
 	}
-	
+
 	@Override
 	public IMacroSettings getSettings() {
 		return new IMacroSettings() {
@@ -72,10 +72,10 @@ class MacroContext implements IMacroContext {
 			}
 		};
 	}
-	
+
 	static MacroContext create(String macroName, String parameters, String body,
 			HtmlSerializerContext htmlSerializerContext, BeanFactory beanFactory) {
-		
+
 		return (MacroContext) beanFactory.getBean(ID, macroName, parameters, body, htmlSerializerContext);
 	}
 }

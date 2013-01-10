@@ -1,6 +1,6 @@
 /*
 documentr - Edit, maintain, and present software documentation on the web.
-Copyright (C) 2012 Maik Schreiber
+Copyright (C) 2012-2013 Maik Schreiber
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -20,7 +20,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 .code-view-wrapper {
 	height: 450px;
 	position: relative;
-	border: 1px solid #ccc;
 	border-radius: 4px;
 	// http://stackoverflow.com/a/712418
 	overflow: auto;
@@ -84,5 +83,21 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	.editor-wrapper {
 		height: 150px;
 		margin-bottom: 1px;
+	}
+}
+
+.ace_editor {
+	border: 1px solid #ccc;
+	
+	&.ace_focus {
+		border: 1px solid #5897fb;
+	}
+}
+
+.ace-chrome {
+	.ace_support {
+		&.ace_function {
+			color: #C00F40 !important;
+		}
 	}
 }

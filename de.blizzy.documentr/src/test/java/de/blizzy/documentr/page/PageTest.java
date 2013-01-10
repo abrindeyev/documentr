@@ -1,6 +1,6 @@
 /*
 documentr - Edit, maintain, and present software documentation on the web.
-Copyright (C) 2012 Maik Schreiber
+Copyright (C) 2012-2013 Maik Schreiber
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -31,49 +31,49 @@ public class PageTest {
 
 	@Test
 	public void getTitle() {
-		PageTextData pageData = new PageTextData(TEXT); 
-		Page page = new Page(TITLE, pageData.getContentType(), pageData); 
-		assertEquals(TITLE, page.getTitle()); 
-		
-		page = Page.fromData(new byte[] { 1, 2, 3 }, IMAGE_PNG); 
+		PageTextData pageData = new PageTextData(TEXT);
+		Page page = new Page(TITLE, pageData.getContentType(), pageData);
+		assertEquals(TITLE, page.getTitle());
+
+		page = Page.fromData(new byte[] { 1, 2, 3 }, IMAGE_PNG);
 		assertNull(page.getTitle());
-		
-		page = Page.fromText(TITLE, TEXT); 
-		assertEquals(TITLE, page.getTitle()); 
-		
-		page = Page.fromMeta(TITLE, IMAGE_PNG); 
-		assertEquals(TITLE, page.getTitle()); 
+
+		page = Page.fromText(TITLE, TEXT);
+		assertEquals(TITLE, page.getTitle());
+
+		page = Page.fromMeta(TITLE, IMAGE_PNG);
+		assertEquals(TITLE, page.getTitle());
 	}
-	
+
 	@Test
 	public void getContentType() {
-		PageTextData pageData = new PageTextData(TEXT); 
-		Page page = new Page(TITLE, pageData.getContentType(), pageData); 
+		PageTextData pageData = new PageTextData(TEXT);
+		Page page = new Page(TITLE, pageData.getContentType(), pageData);
 		assertEquals(pageData.getContentType(), page.getContentType());
-		
-		page = Page.fromData(new byte[] { 1, 2, 3 }, IMAGE_PNG); 
-		assertEquals(IMAGE_PNG, page.getContentType()); 
-		
-		page = Page.fromText(TITLE, TEXT); 
+
+		page = Page.fromData(new byte[] { 1, 2, 3 }, IMAGE_PNG);
+		assertEquals(IMAGE_PNG, page.getContentType());
+
+		page = Page.fromText(TITLE, TEXT);
 		assertEquals(PageTextData.CONTENT_TYPE, page.getContentType());
-		
-		page = Page.fromMeta(TITLE, IMAGE_PNG); 
-		assertEquals(IMAGE_PNG, page.getContentType()); 
+
+		page = Page.fromMeta(TITLE, IMAGE_PNG);
+		assertEquals(IMAGE_PNG, page.getContentType());
 	}
-	
+
 	@Test
 	public void getData() {
-		PageTextData pageData = new PageTextData(TEXT); 
+		PageTextData pageData = new PageTextData(TEXT);
 		Page page = new Page(TITLE, pageData.getContentType(), pageData);
 		assertEquals(pageData, page.getData());
-		
+
 		page = Page.fromData(new byte[] { 1, 2, 3 }, IMAGE_PNG);
 		assertTrue(Arrays.equals(new byte[] { 1, 2, 3 }, page.getData().getData()));
-		
-		page = Page.fromText(TITLE, TEXT); 
+
+		page = Page.fromText(TITLE, TEXT);
 		assertEquals(TEXT, ((PageTextData) page.getData()).getText());
 	}
-	
+
 	@Test
 	public void testEquals() {
 		assertEqualsContract(
@@ -82,7 +82,7 @@ public class PageTest {
 				Page.fromText(TITLE, TEXT),
 				Page.fromText(TITLE, "bleh")); //$NON-NLS-1$
 	}
-	
+
 	@Test
 	public void testHashCode() {
 		assertHashCodeContract(

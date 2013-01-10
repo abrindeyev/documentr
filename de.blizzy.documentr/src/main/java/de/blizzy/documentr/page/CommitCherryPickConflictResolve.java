@@ -1,6 +1,6 @@
 /*
 documentr - Edit, maintain, and present software documentation on the web.
-Copyright (C) 2012 Maik Schreiber
+Copyright (C) 2012-2013 Maik Schreiber
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -35,19 +35,19 @@ public class CommitCherryPickConflictResolve {
 		Assert.hasLength(targetBranch);
 		Assert.hasLength(commit);
 		Assert.notNull(text);
-		
+
 		this.targetBranch = targetBranch;
 		this.commit = commit;
 		this.text = text;
 	}
-	
+
 	boolean isApplicable(String targetBranch, String commit) {
 		Assert.hasLength(targetBranch);
 		Assert.hasLength(commit);
 
 		return targetBranch.equals(this.targetBranch) && commit.equals(this.commit);
 	}
-	
+
 	@Override
 	public boolean equals(Object o) {
 		if (o == this) {
@@ -62,7 +62,7 @@ public class CommitCherryPickConflictResolve {
 		}
 		return false;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder()

@@ -1,6 +1,6 @@
 /*
 documentr - Edit, maintain, and present software documentation on the web.
-Copyright (C) 2012 Maik Schreiber
+Copyright (C) 2012-2013 Maik Schreiber
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -37,7 +37,7 @@ public class PanelRowMacroTest extends AbstractDocumentrTest {
 	public void setUp() {
 		runnable = new PanelRowMacro();
 	}
-	
+
 	@Test
 	public void getHtml() {
 		when(context.getBody()).thenReturn("body"); //$NON-NLS-1$

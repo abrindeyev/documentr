@@ -1,6 +1,6 @@
 /*
 documentr - Edit, maintain, and present software documentation on the web.
-Copyright (C) 2012 Maik Schreiber
+Copyright (C) 2012-2013 Maik Schreiber
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -47,7 +47,7 @@ public interface IPageStore {
 			Page attachment, User user) throws IOException;
 
 	Page getPage(String projectName, String branchName, String path, boolean loadData) throws IOException;
-	
+
 	Page getPage(String projectName, String branchName, String path, String commit, boolean loadData) throws IOException;
 
 	Page getAttachment(String projectName, String branchName, String pagePath, String name) throws IOException;
@@ -67,7 +67,7 @@ public interface IPageStore {
 			@CacheEvict(value="page_metadata", key="#projectName + '/' + #branchName + '/' + #path")
 	})
 	void deletePage(String projectName, String branchName, String path, User user) throws IOException;
-	
+
 	@Cacheable(value="page_metadata", key="#projectName + '/' + #branchName + '/' + #path")
 	PageMetadata getPageMetadata(String projectName, String branchName, String path) throws IOException;
 
@@ -106,6 +106,6 @@ public interface IPageStore {
 	})
 	void restorePageVersion(String projectName, String branchName, String path, String version, User user)
 			throws IOException;
-	
+
 	List<String> listAllPagePaths(String projectName, String branchName) throws IOException;
 }

@@ -1,6 +1,6 @@
 /*
 documentr - Edit, maintain, and present software documentation on the web.
-Copyright (C) 2012 Maik Schreiber
+Copyright (C) 2012-2013 Maik Schreiber
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -49,7 +49,7 @@ public class WebappInitializer implements WebApplicationInitializer {
 
 	private WebApplicationContext setupApplicationContext(ServletContext context) {
 		log.debug("initializing Spring application context"); //$NON-NLS-1$
-		
+
 		AnnotationConfigWebApplicationContext appContext = new AnnotationConfigWebApplicationContext();
 		appContext.setServletContext(context);
 		appContext.setConfigLocation(ContextConfig.class.getName());
@@ -61,11 +61,11 @@ public class WebappInitializer implements WebApplicationInitializer {
 
 	private void setupServletContext(ServletContext context, WebApplicationContext appContext) {
 		log.debug("initializing servlet context"); //$NON-NLS-1$
-		
+
 		context.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, appContext);
 
 		context.setSessionTrackingModes(EnumSet.of(SessionTrackingMode.COOKIE));
-		
+
 		DispatcherServlet dispatcherServlet = new DispatcherServlet(appContext);
 		ServletRegistration.Dynamic dispatcher = context.addServlet("dispatcher", dispatcherServlet); //$NON-NLS-1$
 		dispatcher.setLoadOnStartup(1);
@@ -77,7 +77,7 @@ public class WebappInitializer implements WebApplicationInitializer {
 
 		FilterRegistration.Dynamic trimFilterConfig = context.addFilter("trimFilter", TrimFilter.class); //$NON-NLS-1$
 		trimFilterConfig.addMappingForUrlPatterns(null, true, "/*"); //$NON-NLS-1$
-		
+
 		DelegatingFilterProxy securityFilter =
 				new DelegatingFilterProxy("springSecurityFilterChain", appContext); //$NON-NLS-1$
 		FilterRegistration.Dynamic securityFilterConfig =

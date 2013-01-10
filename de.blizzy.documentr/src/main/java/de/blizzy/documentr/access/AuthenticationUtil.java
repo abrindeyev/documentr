@@ -1,6 +1,6 @@
 /*
 documentr - Edit, maintain, and present software documentation on the web.
-Copyright (C) 2012 Maik Schreiber
+Copyright (C) 2012-2013 Maik Schreiber
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -20,8 +20,6 @@ package de.blizzy.documentr.access;
 import java.util.concurrent.TimeUnit;
 
 import javax.servlet.http.HttpSession;
-
-import org.springframework.security.core.Authentication;
 
 /** {@link Authentication} utility methods. */
 public final class AuthenticationUtil {

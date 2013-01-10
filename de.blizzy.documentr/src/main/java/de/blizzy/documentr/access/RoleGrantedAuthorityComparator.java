@@ -1,6 +1,6 @@
 /*
 documentr - Edit, maintain, and present software documentation on the web.
-Copyright (C) 2012 Maik Schreiber
+Copyright (C) 2012-2013 Maik Schreiber
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -32,14 +32,14 @@ class RoleGrantedAuthorityComparator implements Comparator<RoleGrantedAuthority>
 		if (result != 0) {
 			return result;
 		}
-		
+
 		String targetId1 = target1.getTargetId();
 		String targetId2 = target2.getTargetId();
 		result = targetId1.compareToIgnoreCase(targetId2);
 		if (result != 0) {
 			return result;
 		}
-		
+
 		return rga1.getRoleName().compareToIgnoreCase(rga2.getRoleName());
 	}
 }

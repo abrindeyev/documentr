@@ -1,6 +1,6 @@
 /*
 documentr - Edit, maintain, and present software documentation on the web.
-Copyright (C) 2012 Maik Schreiber
+Copyright (C) 2012-2013 Maik Schreiber
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -51,18 +51,18 @@ abstract class AbstractUserDetailsService implements UserDetailsService {
 		if (loginName.equals(UserStore.ANONYMOUS_USER_LOGIN_NAME)) {
 			throw new UsernameNotFoundException("user not found: " + loginName); //$NON-NLS-1$
 		}
-		
+
 		try {
 			User user = loadUser(loginName);
 			loginName = user.getLoginName();
-			
+
 			List<RoleGrantedAuthority> userAuthorities = userStore.getUserAuthorities(loginName);
 
 			Set<GrantedAuthority> authorities = Sets.newHashSet();
 			for (RoleGrantedAuthority rga : userAuthorities) {
 				authorities.addAll(userStore.toPermissionGrantedAuthorities(rga));
 			}
-			
+
 			return new org.springframework.security.core.userdetails.User(
 					loginName, user.getPassword(), !user.isDisabled(), true, true, true, authorities);
 		} catch (IOException e) {

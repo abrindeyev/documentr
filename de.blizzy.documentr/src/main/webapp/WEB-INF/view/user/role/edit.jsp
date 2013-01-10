@@ -1,6 +1,6 @@
 <%--
 documentr - Edit, maintain, and present software documentation on the web.
-Copyright (C) 2012 Maik Schreiber
+Copyright (C) 2012-2013 Maik Schreiber
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -114,7 +114,6 @@ $(function() {
 
 <h2><spring:message code="title.editRole"/></h2>
 
-<p>
 <c:set var="action"><c:url value="/role/save"/></c:set>
 <form:form commandName="roleForm" action="${action}" method="POST" cssClass="well form-horizontal" onsubmit="clearDirty(); return true;">
 	<fieldset>
@@ -161,13 +160,12 @@ $(function() {
 		<div class="form-actions">
 			<input type="submit" class="btn btn-primary" value="<spring:message code="button.save"/>"/>
 			<c:if test="${!empty roleForm.originalName}">
-				<a href="javascript:void(showDeleteDialog());" class="btn btn-warning"><spring:message code="button.delete"/></a>
+				<button onclick="showDeleteDialog(); return false;" class="btn btn-warning"><spring:message code="button.delete"/></button>
 			</c:if>
 			<a href="<c:url value="/roles"/>" class="btn"><spring:message code="button.cancel"/></a>
 		</div>
 	</fieldset>
 </form:form>
-</p>
 
 </dt:page>
 

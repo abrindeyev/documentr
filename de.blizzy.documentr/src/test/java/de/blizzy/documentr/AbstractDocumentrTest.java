@@ -1,6 +1,6 @@
 /*
 documentr - Edit, maintain, and present software documentation on the web.
-Copyright (C) 2012 Maik Schreiber
+Copyright (C) 2012-2013 Maik Schreiber
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@ import de.blizzy.documentr.repository.ILockedRepository;
 
 public abstract class AbstractDocumentrTest {
 	private Set<ILockedRepository> repositories = Sets.newHashSet();
-	
+
 	@Before
 	public void initMocks() {
 		MockitoAnnotations.initMocks(this);
@@ -43,7 +43,7 @@ public abstract class AbstractDocumentrTest {
 		}
 		repositories.clear();
 	}
-	
+
 	protected void register(ILockedRepository repository) {
 		if (repository != null) {
 			repositories.add(repository);

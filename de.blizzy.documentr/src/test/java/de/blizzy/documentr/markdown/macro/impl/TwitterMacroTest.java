@@ -1,6 +1,6 @@
 /*
 documentr - Edit, maintain, and present software documentation on the web.
-Copyright (C) 2012 Maik Schreiber
+Copyright (C) 2012-2013 Maik Schreiber
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -32,12 +32,12 @@ public class TwitterMacroTest extends AbstractDocumentrTest {
 	@Mock
 	private IMacroContext context;
 	private TwitterMacro runnable;
-	
+
 	@Before
 	public void setUp() {
 		runnable = new TwitterMacro();
 	}
-	
+
 	@Test
 	public void getHtml() {
 		when(context.getParameters()).thenReturn("\"searchParams\""); //$NON-NLS-1$

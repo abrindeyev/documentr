@@ -1,6 +1,6 @@
 /*
 documentr - Edit, maintain, and present software documentation on the web.
-Copyright (C) 2012 Maik Schreiber
+Copyright (C) 2012-2013 Maik Schreiber
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -40,7 +40,7 @@ final class LockedRepository implements ILockedRepository {
 		ILock lock = lockManager.lockProjectCentral(projectName);
 		return new LockedRepository(lock, lockManager);
 	}
-	
+
 	static LockedRepository lockProjectBranch(String projectName, String branchName, LockManager lockManager) {
 		ILock lock = lockManager.lockProjectBranch(projectName, branchName);
 		return new LockedRepository(lock, lockManager);
@@ -53,7 +53,7 @@ final class LockedRepository implements ILockedRepository {
 		}
 		return repository;
 	}
-	
+
 	@Override
 	public void close() {
 		try {

@@ -1,6 +1,6 @@
 /*
 documentr - Edit, maintain, and present software documentation on the web.
-Copyright (C) 2012 Maik Schreiber
+Copyright (C) 2012-2013 Maik Schreiber
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -58,12 +58,12 @@ public class Page {
 		PageTextData pageData = new PageTextData(text);
 		return new Page(title, pageData.getContentType(), pageData);
 	}
-	
+
 	public static Page fromData(byte[] data, String contentType) {
 		PageData pageData = new PageData(data, contentType);
 		return new Page(null, contentType, pageData);
 	}
-	
+
 	public static Page fromMeta(String title, String contentType) {
 		return new Page(title, contentType, null);
 	}
@@ -72,10 +72,10 @@ public class Page {
 		if (viewRestrictionRole != null) {
 			Assert.hasLength(viewRestrictionRole);
 		}
-		
+
 		this.viewRestrictionRole = viewRestrictionRole;
 	}
-	
+
 	@Override
 	public boolean equals(Object o) {
 		if (o == this) {
@@ -93,7 +93,7 @@ public class Page {
 		}
 		return false;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder()

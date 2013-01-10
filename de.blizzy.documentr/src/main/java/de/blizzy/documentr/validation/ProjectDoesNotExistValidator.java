@@ -1,6 +1,6 @@
 /*
 documentr - Edit, maintain, and present software documentation on the web.
-Copyright (C) 2012 Maik Schreiber
+Copyright (C) 2012-2013 Maik Schreiber
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@ import de.blizzy.documentr.validation.annotation.ProjectDoesNotExist;
 public class ProjectDoesNotExistValidator implements ConstraintValidator<ProjectDoesNotExist, String> {
 	@Autowired
 	private GlobalRepositoryManager globalRepositoryManager;
-	
+
 	@Override
 	public void initialize(ProjectDoesNotExist annotation) {
 	}

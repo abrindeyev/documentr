@@ -1,6 +1,6 @@
 /*
 documentr - Edit, maintain, and present software documentation on the web.
-Copyright (C) 2012 Maik Schreiber
+Copyright (C) 2012-2013 Maik Schreiber
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -54,16 +54,16 @@ public class DocumentrOpenIdAuthenticationFilterTest extends AbstractDocumentrTe
 	private FacadeHostRequestWrapperFactory facadeHostRequestWrapperFactory;
 	@InjectMocks
 	private DocumentrOpenIdAuthenticationFilter filter;
-	
+
 	@Test
 	@SuppressWarnings("unchecked")
 	public void attemptAuthentication() throws AuthenticationException, IOException, OpenIDConsumerException {
 		when(facadeHostRequestWrapperFactory.create(request)).thenReturn(requestWrapper);
 
 		when(requestWrapper.getParameter("openid.identity")).thenReturn("identity"); //$NON-NLS-1$ //$NON-NLS-2$
-		
+
 		when(consumer.endConsumption(requestWrapper)).thenThrow(OpenIDConsumerException.class);
-		
+
 		expectedException.expect(AuthenticationServiceException.class);
 		filter.attemptAuthentication(request, response);
 	}

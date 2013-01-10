@@ -1,6 +1,6 @@
 /*
 documentr - Edit, maintain, and present software documentation on the web.
-Copyright (C) 2012 Maik Schreiber
+Copyright (C) 2012-2013 Maik Schreiber
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -37,7 +37,7 @@ public class EventBusBeanPostProcessorTest extends AbstractDocumentrTest {
 		@SuppressWarnings("unused")
 		public void foo() {}
 	}
-	
+
 	private static final class NonSubscriber {}
 
 	@Mock
@@ -51,24 +51,24 @@ public class EventBusBeanPostProcessorTest extends AbstractDocumentrTest {
 	public void setUp() {
 		when(beanFactory.getBean(EventBus.class)).thenReturn(eventBus);
 	}
-	
+
 	@Test
 	public void postProcessBeforeInitialization() {
 		Subscriber subscriber = new Subscriber();
 
 		Object result = beanPostProcessor.postProcessBeforeInitialization(subscriber, "subscriber"); //$NON-NLS-1$
 		assertSame(subscriber, result);
-		
+
 		verify(eventBus).register(subscriber);
 	}
 
 	@Test
 	public void postProcessBeforeInitializationWithNonSubscriber() {
 		NonSubscriber nonSubscriber = new NonSubscriber();
-		
+
 		Object result = beanPostProcessor.postProcessBeforeInitialization(nonSubscriber, "nonSubscriber"); //$NON-NLS-1$
 		assertSame(nonSubscriber, result);
-		
+
 		verify(eventBus, never()).register(nonSubscriber);
 	}
 }

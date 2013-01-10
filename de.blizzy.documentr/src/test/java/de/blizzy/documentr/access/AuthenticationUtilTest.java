@@ -1,6 +1,6 @@
 /*
 documentr - Edit, maintain, and present software documentation on the web.
-Copyright (C) 2012 Maik Schreiber
+Copyright (C) 2012-2013 Maik Schreiber
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -33,13 +33,13 @@ import de.blizzy.documentr.AbstractDocumentrTest;
 public class AuthenticationUtilTest extends AbstractDocumentrTest {
 	@Mock
 	private HttpSession session;
-	
+
 	@Test
 	public void setAuthenticationCreationTime() {
 		AuthenticationUtil.setAuthenticationCreationTime(session, 123);
 		verify(session).setAttribute("authenticationCreationTime", 123L); //$NON-NLS-1$
 	}
-	
+
 	@Test
 	public void getAuthenticationCreationTime() {
 		Calendar c = new GregorianCalendar(2012, Calendar.JUNE, 17);

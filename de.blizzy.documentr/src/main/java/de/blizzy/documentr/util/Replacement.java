@@ -1,6 +1,6 @@
 /*
 documentr - Edit, maintain, and present software documentation on the web.
-Copyright (C) 2012 Maik Schreiber
+Copyright (C) 2012-2013 Maik Schreiber
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@ public class Replacement {
 	public Replacement(Pattern pattern, String replaceWith) {
 		Assert.notNull(pattern);
 		Assert.notNull(replaceWith);
-		
+
 		this.pattern = pattern;
 		this.replaceWith = replaceWith;
 	}
@@ -36,14 +36,14 @@ public class Replacement {
 	public Replacement(String pattern, String replaceWith) {
 		Assert.hasLength(pattern);
 		Assert.notNull(replaceWith);
-		
+
 		this.pattern = Pattern.compile(pattern);
 		this.replaceWith = replaceWith;
 	}
 
 	public static Replacement dotAllNoCase(String pattern, String replaceWith) {
 		Assert.hasLength(pattern);
-		
+
 		Pattern p = Pattern.compile(pattern, Pattern.DOTALL + Pattern.CASE_INSENSITIVE);
 		return new Replacement(p, replaceWith);
 	}

@@ -1,6 +1,6 @@
 /*
 documentr - Edit, maintain, and present software documentation on the web.
-Copyright (C) 2012 Maik Schreiber
+Copyright (C) 2012-2013 Maik Schreiber
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -38,12 +38,12 @@ public class DocumentrMethodSecurityExpressionHandlerTest extends AbstractDocume
 	private Authentication authentication;
 	@InjectMocks
 	private DocumentrMethodSecurityExpressionHandler expressionHandler;
-	
+
 	@Test
 	public void createSecurityExpressionRoot() {
 		Object target = "this"; //$NON-NLS-1$
 		when(methodInvocation.getThis()).thenReturn(target);
-		
+
 		DocumentrSecurityExpressionRoot root =
 				(DocumentrSecurityExpressionRoot) expressionHandler.createSecurityExpressionRoot(
 						authentication, methodInvocation);

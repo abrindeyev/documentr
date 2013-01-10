@@ -1,6 +1,6 @@
 /*
 documentr - Edit, maintain, and present software documentation on the web.
-Copyright (C) 2012 Maik Schreiber
+Copyright (C) 2012-2013 Maik Schreiber
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -76,7 +76,7 @@ public class PageForm {
 
 	PageForm(String projectName, String branchName, String path, String parentPagePath, String title, String text,
 			String viewRestrictionRole, String commit, String[] tags) {
-		
+
 		this.projectName = projectName;
 		this.branchName = branchName;
 		this.path = path;
@@ -87,7 +87,7 @@ public class PageForm {
 		this.commit = commit;
 		this.tags = ArrayUtils.clone(tags);
 	}
-	
+
 	public String[] getTags() {
 		return ArrayUtils.clone(tags);
 	}

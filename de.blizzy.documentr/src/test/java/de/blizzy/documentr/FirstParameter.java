@@ -1,6 +1,6 @@
 /*
 documentr - Edit, maintain, and present software documentation on the web.
-Copyright (C) 2012 Maik Schreiber
+Copyright (C) 2012-2013 Maik Schreiber
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -22,7 +22,7 @@ import org.mockito.stubbing.Answer;
 
 public class FirstParameter<T> implements Answer<T> {
 	@Override
-	public T answer(InvocationOnMock invocation) throws Throwable {
+	public T answer(InvocationOnMock invocation) {
 		@SuppressWarnings("unchecked")
 		T result = (T) invocation.getArguments()[0];
 		return result;

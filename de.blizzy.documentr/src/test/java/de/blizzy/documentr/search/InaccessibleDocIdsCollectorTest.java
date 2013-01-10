@@ -1,6 +1,6 @@
 /*
 documentr - Edit, maintain, and present software documentation on the web.
-Copyright (C) 2012 Maik Schreiber
+Copyright (C) 2012-2013 Maik Schreiber
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -63,7 +63,7 @@ public class InaccessibleDocIdsCollectorTest extends AbstractDocumentrTest {
 	@Before
 	public void setUp() throws IOException {
 		directory = new RAMDirectory();
-		
+
 		StandardAnalyzer analyzer = new StandardAnalyzer(Version.LUCENE_40);
 		IndexWriterConfig writerConfig = new IndexWriterConfig(Version.LUCENE_40, analyzer);
 		writerConfig.setOpenMode(OpenMode.CREATE_OR_APPEND);
@@ -72,23 +72,23 @@ public class InaccessibleDocIdsCollectorTest extends AbstractDocumentrTest {
 		writer.addDocument(createDocument("project", "branch2", "home")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		writer.commit();
 		writer.close(true);
-		
+
 		reader = DirectoryReader.open(directory);
-		
+
 		collector = new InaccessibleDocIdsCollector(Permission.VIEW, authentication, permissionEvaluator);
 	}
-	
+
 	@After
 	public void tearDown() {
 		Closeables.closeQuietly(reader);
 		Closeables.closeQuietly(directory);
 	}
-	
+
 	@Test
 	public void getDocIdSet() throws IOException {
 		when(permissionEvaluator.hasPagePermission(authentication,
 				"project", "branch2", "home", Permission.VIEW)).thenReturn(true); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		
+
 		IndexSearcher searcher = new IndexSearcher(reader);
 		Query query = new TermQuery(new Term("path", "home")); //$NON-NLS-1$ //$NON-NLS-2$
 		searcher.search(query, collector);
@@ -97,7 +97,7 @@ public class InaccessibleDocIdsCollectorTest extends AbstractDocumentrTest {
 		assertTrue(docIds.get(0));
 		assertFalse(docIds.get(1));
 	}
-	
+
 	private Document createDocument(String projectName, String branchName, String path) {
 		Document doc = new Document();
 		doc.add(new StringField(PageIndex.PROJECT, projectName, Store.YES));

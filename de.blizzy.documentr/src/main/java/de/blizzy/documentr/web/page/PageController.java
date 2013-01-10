@@ -1,6 +1,6 @@
 /*
 documentr - Edit, maintain, and present software documentation on the web.
-Copyright (C) 2012 Maik Schreiber
+Copyright (C) 2012-2013 Maik Schreiber
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@ package de.blizzy.documentr.web.page;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -92,7 +93,7 @@ public class PageController {
 	private IPageRenderer pageRenderer;
 	@Autowired
 	private DocumentrPermissionEvaluator permissionEvaluator;
-	
+
 	@RequestMapping(value="/{projectName:" + DocumentrConstants.PROJECT_NAME_PATTERN + "}/" +
 			"{branchName:" + DocumentrConstants.BRANCH_NAME_PATTERN + "}/" +
 			"{path:" + DocumentrConstants.PAGE_PATH_URL_PATTERN + "}",
@@ -152,7 +153,7 @@ public class PageController {
 		model.addAttribute("pageForm", form); //$NON-NLS-1$
 		return "/project/branch/page/edit"; //$NON-NLS-1$
 	}
-	
+
 	@RequestMapping(value="/edit/{projectName:" + DocumentrConstants.PROJECT_NAME_PATTERN + "}/" +
 			"{branchName:" + DocumentrConstants.BRANCH_NAME_PATTERN + "}/" +
 			"{path:" + DocumentrConstants.PAGE_PATH_URL_PATTERN + "}",
@@ -160,7 +161,7 @@ public class PageController {
 	@PreAuthorize("hasPagePermission(#projectName, #branchName, #path, EDIT_PAGE)")
 	public String editPage(@PathVariable String projectName, @PathVariable String branchName,
 			@PathVariable String path, Model model, HttpSession session) throws IOException {
-		
+
 		try {
 			path = Util.toRealPagePath(path);
 
@@ -169,7 +170,7 @@ public class PageController {
 			String viewRestrictionRole = page.getViewRestrictionRole();
 			PageMetadata metadata = pageStore.getPageMetadata(projectName, branchName, path);
 			String commit = metadata.getCommit();
-			
+
 			MergeConflict conflict = (MergeConflict) session.getAttribute("conflict"); //$NON-NLS-1$
 			session.removeAttribute("conflict"); //$NON-NLS-1$
 			if (conflict != null) {
@@ -197,17 +198,17 @@ public class PageController {
 			return ErrorController.notFound("page.notFound"); //$NON-NLS-1$
 		}
 	}
-	
+
 	@RequestMapping(value="/save/{projectName:" + DocumentrConstants.PROJECT_NAME_PATTERN + "}/" +
 			"{branchName:" + DocumentrConstants.BRANCH_NAME_PATTERN + "}", method=RequestMethod.POST)
 	@PreAuthorize("hasBranchPermission(#form.projectName, #form.branchName, EDIT_PAGE)")
 	public String savePage(@ModelAttribute @Valid PageForm form, BindingResult bindingResult,
 			Model model, Authentication authentication) throws IOException {
-		
+
 		String projectName = form.getProjectName();
 		String branchName = form.getBranchName();
 		User user = userStore.getUser(authentication.getName());
-		
+
 		if (!globalRepositoryManager.listProjectBranches(projectName).contains(branchName)) {
 			bindingResult.rejectValue("branchName", "page.branch.nonexistent"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
@@ -229,7 +230,7 @@ public class PageController {
 		page.setTags(Sets.newHashSet(form.getTags()));
 		page.setViewRestrictionRole(StringUtils.isNotBlank(form.getViewRestrictionRole()) ?
 				form.getViewRestrictionRole() : null);
-		
+
 		Page oldPage = null;
 		try {
 			oldPage = pageStore.getPage(projectName, branchName, path, true);
@@ -246,12 +247,12 @@ public class PageController {
 				return "/project/branch/page/edit"; //$NON-NLS-1$
 			}
 		}
-		
+
 		Integer start = form.getParentPageSplitRangeStart();
 		Integer end = form.getParentPageSplitRangeEnd();
 		if (StringUtils.isNotBlank(parentPagePath) && (start != null) && (end != null) &&
 			permissionEvaluator.hasBranchPermission(authentication, projectName, branchName, Permission.EDIT_PAGE)) {
-			
+
 			log.info("splitting off {}-{} of {}/{}/{}", //$NON-NLS-1$
 					start, end, projectName, branchName, parentPagePath);
 
@@ -266,7 +267,7 @@ public class PageController {
 		return "redirect:/page/" + projectName + "/" + branchName + "/" + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			Util.toUrlPagePath(path);
 	}
-	
+
 	@ModelAttribute
 	public PageForm createPageForm(@PathVariable String projectName, @PathVariable String branchName,
 			@RequestParam(required=false) String path, @RequestParam(required=false) String parentPagePath,
@@ -284,7 +285,7 @@ public class PageController {
 						Strings.emptyToNull(commit), tags) :
 				null;
 	}
-	
+
 	@RequestMapping(value="/generateName/{projectName:" + DocumentrConstants.PROJECT_NAME_PATTERN + "}/" +
 			"{branchName:" + DocumentrConstants.BRANCH_NAME_PATTERN + "}/" +
 			"{parentPagePath:" + DocumentrConstants.PAGE_PATH_URL_PATTERN + "}/json",
@@ -328,7 +329,7 @@ public class PageController {
 		result.put("html", html); //$NON-NLS-1$
 		return result;
 	}
-	
+
 	@RequestMapping(value="/copyToBranch/{projectName:" + DocumentrConstants.PROJECT_NAME_PATTERN + "}/" +
 			"{branchName:" + DocumentrConstants.BRANCH_NAME_PATTERN + "}/" +
 			"{path:" + DocumentrConstants.PAGE_PATH_URL_PATTERN + "}",
@@ -354,14 +355,14 @@ public class PageController {
 	@PreAuthorize("hasBranchPermission(#projectName, #branchName, EDIT_PAGE)")
 	public String deletePage(@PathVariable String projectName, @PathVariable String branchName,
 			@PathVariable String path, Authentication authentication) throws IOException {
-		
+
 		path = Util.toRealPagePath(path);
 		User user = userStore.getUser(authentication.getName());
 		pageStore.deletePage(projectName, branchName, path, user);
 		return "redirect:/page/" + projectName + "/" + branchName + //$NON-NLS-1$ //$NON-NLS-2$
 				"/" + DocumentrConstants.HOME_PAGE_NAME; //$NON-NLS-1$
 	}
-	
+
 	@RequestMapping(value="/relocate/{projectName:" + DocumentrConstants.PROJECT_NAME_PATTERN + "}/" +
 			"{branchName:" + DocumentrConstants.BRANCH_NAME_PATTERN + "}/" +
 			"{path:" + DocumentrConstants.PAGE_PATH_URL_PATTERN + "}",
@@ -370,17 +371,17 @@ public class PageController {
 	public String relocatePage(@PathVariable String projectName, @PathVariable String branchName,
 			@PathVariable String path, @RequestParam String newParentPagePath, Authentication authentication)
 			throws IOException {
-		
+
 		path = Util.toRealPagePath(path);
 		newParentPagePath = Util.toRealPagePath(newParentPagePath);
-		
+
 		User user = userStore.getUser(authentication.getName());
 		pageStore.relocatePage(projectName, branchName, path, newParentPagePath, user);
 		String pageName = path.contains("/") ? StringUtils.substringAfterLast(path, "/") : path; //$NON-NLS-1$ //$NON-NLS-2$
 		return "redirect:/page/" + projectName + "/" + branchName + //$NON-NLS-1$ //$NON-NLS-2$
 				"/" + Util.toUrlPagePath(newParentPagePath + "/" + pageName); //$NON-NLS-1$ //$NON-NLS-2$
 	}
-	
+
 	@RequestMapping(value="/markdown/{projectName:" + DocumentrConstants.PROJECT_NAME_PATTERN + "}/" +
 			"{branchName:" + DocumentrConstants.BRANCH_NAME_PATTERN + "}/" +
 			"{path:" + DocumentrConstants.PAGE_PATH_URL_PATTERN + "}/json",
@@ -390,7 +391,11 @@ public class PageController {
 	public Map<String, String> getPageMarkdown(@PathVariable String projectName, @PathVariable String branchName,
 			@PathVariable String path, @RequestParam Set<String> versions) throws IOException {
 
-		return pageStore.getMarkdown(projectName, branchName, Util.toRealPagePath(path), versions);
+		try {
+			return pageStore.getMarkdown(projectName, branchName, Util.toRealPagePath(path), versions);
+		} catch (PageNotFoundException e) {
+			return Collections.emptyMap();
+		}
 	}
 
 	@RequestMapping(value="/markdownInRange/{projectName:" + DocumentrConstants.PROJECT_NAME_PATTERN + "}/" +
@@ -437,13 +442,13 @@ public class PageController {
 	public Map<String, Object> savePageRange(@PathVariable String projectName, @PathVariable String branchName,
 			@PathVariable String path, @RequestParam String markdown, @RequestParam String range,
 			@RequestParam String commit, Authentication authentication, HttpServletRequest request) throws IOException {
-		
+
 		path = Util.toRealPagePath(path);
-		
+
 		markdown = markdown.replaceAll("[\\r\\n]+$", StringUtils.EMPTY); //$NON-NLS-1$
 		int rangeStart = Integer.parseInt(StringUtils.substringBefore(range, ",")); //$NON-NLS-1$
 		int rangeEnd = Integer.parseInt(StringUtils.substringAfter(range, ",")); //$NON-NLS-1$
-		
+
 		Page page = pageStore.getPage(projectName, branchName, path, commit, true);
 		String text = ((PageTextData) page.getData()).getText();
 		rangeEnd = Math.min(rangeEnd, text.length());
@@ -451,9 +456,9 @@ public class PageController {
 		String oldMarkdown = text.substring(rangeStart, rangeEnd);
 		String cleanedOldMarkdown = oldMarkdown.replaceAll("[\\r\\n]+$", StringUtils.EMPTY); //$NON-NLS-1$
 		rangeEnd -= oldMarkdown.length() - cleanedOldMarkdown.length();
-		
+
 		String newText = text.substring(0, rangeStart) + markdown + text.substring(Math.min(rangeEnd, text.length()));
-		
+
 		page.setData(new PageTextData(newText));
 		User user = userStore.getUser(authentication.getName());
 		MergeConflict conflict = pageStore.savePage(projectName, branchName, path, page, commit, user);
@@ -486,11 +491,11 @@ public class PageController {
 	@PreAuthorize("hasPagePermission(#projectName, #branchName, #path, EDIT_PAGE)")
 	public void restoreVersion(@PathVariable String projectName, @PathVariable String branchName,
 			@PathVariable String path, @RequestParam String version, Authentication authentication) throws IOException {
-		
+
 		User user = userStore.getUser(authentication.getName());
 		pageStore.restorePageVersion(projectName, branchName, Util.toRealPagePath(path), version, user);
 	}
-	
+
 	@RequestMapping(value="/cherryPick/{projectName:" + DocumentrConstants.PROJECT_NAME_PATTERN + "}/" +
 			"{branchName:" + DocumentrConstants.BRANCH_NAME_PATTERN + "}/" +
 			"{path:" + DocumentrConstants.PAGE_PATH_URL_PATTERN + "}",
@@ -506,16 +511,16 @@ public class PageController {
 		for (String targetBranch : targetBranches) {
 			if (!permissionEvaluator.hasPagePermission(
 					authentication, projectName, targetBranch, path, Permission.EDIT_PAGE)) {
-				
+
 				return ErrorController.forbidden();
 			}
 		}
-		
+
 		List<String> commits = cherryPicker.getCommitsList(projectName, branchName, path, version1, version2);
 		if (commits.isEmpty()) {
 			throw new IllegalArgumentException("no commits to cherry-pick"); //$NON-NLS-1$
 		}
-		
+
 		User user = userStore.getUser(authentication.getName());
 
 		Map<String, String[]> params = request.getParameterMap();
@@ -548,13 +553,13 @@ public class PageController {
 					}
 				}
 			}
-			
+
 			if (allOk) {
 				return "redirect:/page/" + projectName + "/" + branchName + //$NON-NLS-1$ //$NON-NLS-2$
 						"/" + Util.toUrlPagePath(path); //$NON-NLS-1$
 			}
 		}
-		
+
 		model.addAttribute("cherryPickResults", results); //$NON-NLS-1$
 		model.addAttribute("version1", version1); //$NON-NLS-1$
 		model.addAttribute("version2", version2); //$NON-NLS-1$

@@ -1,6 +1,6 @@
 /*
 documentr - Edit, maintain, and present software documentation on the web.
-Copyright (C) 2012 Maik Schreiber
+Copyright (C) 2012-2013 Maik Schreiber
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -45,10 +45,10 @@ public class TableOfContentsMacroTest extends AbstractDocumentrTest {
 	@Before
 	public void setUp() {
 		runnable = new TableOfContentsMacro();
-		
+
 		when(context.getHtmlSerializerContext()).thenReturn(htmlSerializerContext);
 	}
-	
+
 	@Test
 	public void getMarkdown() {
 		List<Header> headers = Lists.newArrayList(
@@ -65,12 +65,12 @@ public class TableOfContentsMacroTest extends AbstractDocumentrTest {
 				"- [[#qux]]\n\n", //$NON-NLS-1$
 				runnable.getMarkdown(context));
 	}
-	
+
 	@Test
 	public void getMarkdownButNoHeaders() {
 		List<Header> headers = Collections.emptyList();
 		when(htmlSerializerContext.getHeaders()).thenReturn(headers);
-		
+
 		assertNull(runnable.getMarkdown(context));
 	}
 }

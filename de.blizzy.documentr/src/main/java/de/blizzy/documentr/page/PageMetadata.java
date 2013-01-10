@@ -1,6 +1,6 @@
 /*
 documentr - Edit, maintain, and present software documentation on the web.
-Copyright (C) 2012 Maik Schreiber
+Copyright (C) 2012-2013 Maik Schreiber
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@ import lombok.Getter;
 
 public class PageMetadata implements Serializable {
 	private static final long serialVersionUID = -3763833054250717367L;
-	
+
 	@Getter
 	private String lastEditedBy;
 	@Getter

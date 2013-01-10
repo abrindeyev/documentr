@@ -1,6 +1,6 @@
 /*
 documentr - Edit, maintain, and present software documentation on the web.
-Copyright (C) 2012 Maik Schreiber
+Copyright (C) 2012-2013 Maik Schreiber
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -36,21 +36,21 @@ public class ErrorController {
 		model.addAttribute("messageKey", messageKey); //$NON-NLS-1$
 		return "/sendError"; //$NON-NLS-1$
 	}
-	
+
 	public static String timeout() {
 		return "forward:/error/" + HttpServletResponse.SC_SERVICE_UNAVAILABLE + "/timeout"; //$NON-NLS-1$ //$NON-NLS-2$
 	}
-	
+
 	public static String notFound(String messageKey) {
 		Assert.hasLength(messageKey);
-		
+
 		return "forward:/error/" + HttpServletResponse.SC_NOT_FOUND + "/" + messageKey; //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public static String notModified() {
 		return "forward:/error/" + HttpServletResponse.SC_NOT_MODIFIED + "/dummy"; //$NON-NLS-1$ //$NON-NLS-2$
 	}
-	
+
 	public static String forbidden() {
 		return "forward:/error/" + HttpServletResponse.SC_FORBIDDEN + "/dummy"; //$NON-NLS-1$ //$NON-NLS-2$
 	}

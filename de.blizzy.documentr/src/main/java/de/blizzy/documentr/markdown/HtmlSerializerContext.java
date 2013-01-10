@@ -1,6 +1,6 @@
 /*
 documentr - Edit, maintain, and present software documentation on the web.
-Copyright (C) 2012 Maik Schreiber
+Copyright (C) 2012-2013 Maik Schreiber
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -58,7 +58,7 @@ public class HtmlSerializerContext {
 	public HtmlSerializerContext(String projectName, String branchName, String pagePath,
 			MarkdownProcessor markdownProcessor, Authentication authentication, IPageStore pageStore,
 			SystemSettingsStore systemSettingsStore, String contextPath) {
-		
+
 		Assert.hasLength(projectName);
 		Assert.hasLength(branchName);
 		// pagePath can be null for new pages
@@ -66,7 +66,7 @@ public class HtmlSerializerContext {
 		Assert.notNull(authentication);
 		Assert.notNull(pageStore);
 		Assert.notNull(systemSettingsStore);
-		
+
 		this.projectName = projectName;
 		this.branchName = branchName;
 		this.pagePath = pagePath;
@@ -95,7 +95,7 @@ public class HtmlSerializerContext {
 		}
 		return "#"; //$NON-NLS-1$
 	}
-	
+
 	public String getPageUri(String path) {
 		try {
 			String pattern = "/page/{projectName}/{branchName}/{pagePath}"; //$NON-NLS-1$
@@ -114,7 +114,7 @@ public class HtmlSerializerContext {
 		String documentrHost = systemSettingsStore.getSetting(SystemSettingsStore.DOCUMENTR_HOST);
 		return FacadeHostRequestWrapper.buildFacadeUrl(uri, contextPath, documentrHost);
 	}
-	
+
 	public String markdownToHtml(String markdown) {
 		return markdownProcessor.markdownToHtml(markdown, projectName, branchName, pagePath, authentication, contextPath);
 	}
@@ -122,7 +122,7 @@ public class HtmlSerializerContext {
 	void addHeader(String text, int level) {
 		headers.add(new Header(text, level));
 	}
-	
+
 	public List<Header> getHeaders() {
 		return ImmutableList.copyOf(headers);
 	}

@@ -1,6 +1,6 @@
 /*
 documentr - Edit, maintain, and present software documentation on the web.
-Copyright (C) 2012 Maik Schreiber
+Copyright (C) 2012-2013 Maik Schreiber
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -23,7 +23,6 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
@@ -45,7 +44,7 @@ public class DocumentrAnonymousAuthenticationFactory {
 		}
 		// must have at least one authority
 		authorities.add(new SimpleGrantedAuthority("ROLE_ANONYMOUS")); //$NON-NLS-1$
-		
+
 		return new AnonymousAuthenticationToken(key, UserStore.ANONYMOUS_USER_LOGIN_NAME, authorities);
 	}
 }

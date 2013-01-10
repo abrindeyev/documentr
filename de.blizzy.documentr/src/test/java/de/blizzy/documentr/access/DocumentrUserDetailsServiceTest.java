@@ -1,6 +1,6 @@
 /*
 documentr - Edit, maintain, and present software documentation on the web.
-Copyright (C) 2012 Maik Schreiber
+Copyright (C) 2012-2013 Maik Schreiber
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -57,18 +57,18 @@ public class DocumentrUserDetailsServiceTest extends AbstractDocumentrTest {
 		PermissionGrantedAuthority authority = new PermissionGrantedAuthority(
 				GrantedAuthorityTarget.APPLICATION, Permission.ADMIN);
 		when(userStore.toPermissionGrantedAuthorities(roleAuthority)).thenReturn(Collections.singleton(authority));
-		
+
 		UserDetails details = userDetailsService.loadUserByUsername("user"); //$NON-NLS-1$
 		assertEquals("user", details.getUsername()); //$NON-NLS-1$
 		assertTrue(details.isEnabled());
 		assertTrue(Sets.newHashSet(details.getAuthorities()).contains(authority));
 	}
-	
+
 	@Test
 	public void loadUserByUsernameDisabled() throws IOException {
 		User user = new User("user", "pw", "email", true); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		when(userStore.getUser("user")).thenReturn(user); //$NON-NLS-1$
-		
+
 		UserDetails details = userDetailsService.loadUserByUsername("user"); //$NON-NLS-1$
 		assertFalse(details.isEnabled());
 	}
@@ -76,7 +76,7 @@ public class DocumentrUserDetailsServiceTest extends AbstractDocumentrTest {
 	@Test
 	public void loadUserByUsernameUnknown() throws IOException {
 		when(userStore.getUser("nonexistent")).thenThrow(new UserNotFoundException("nonexistent")); //$NON-NLS-1$ //$NON-NLS-2$
-		
+
 		expectedException.expect(UsernameNotFoundException.class);
 		userDetailsService.loadUserByUsername("nonexistent"); //$NON-NLS-1$
 	}

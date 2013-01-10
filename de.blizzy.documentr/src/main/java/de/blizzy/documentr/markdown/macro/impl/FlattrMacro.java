@@ -1,6 +1,6 @@
 /*
 documentr - Edit, maintain, and present software documentation on the web.
-Copyright (C) 2012 Maik Schreiber
+Copyright (C) 2012-2013 Maik Schreiber
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -43,7 +43,7 @@ public class FlattrMacro implements IMacroRunnable {
 	public String getHtml(IMacroContext macroContext) {
 		try {
 			IMacroSettings settings = macroContext.getSettings();
-			String userId = settings.getSetting("userId"); //$NON-NLS-1$ 
+			String userId = settings.getSetting("userId"); //$NON-NLS-1$
 			if (StringUtils.isNotBlank(userId)) {
 				HtmlSerializerContext htmlSerializerContext = macroContext.getHtmlSerializerContext();
 				String projectName = htmlSerializerContext.getProjectName();

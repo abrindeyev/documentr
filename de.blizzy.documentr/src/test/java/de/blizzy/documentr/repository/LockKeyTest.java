@@ -1,6 +1,6 @@
 /*
 documentr - Edit, maintain, and present software documentation on the web.
-Copyright (C) 2012 Maik Schreiber
+Copyright (C) 2012-2013 Maik Schreiber
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -34,7 +34,7 @@ public class LockKeyTest {
 		assertEqualsContract(equal1, equal2, equal3, different2);
 		assertEqualsContract(equal1, equal2, equal3, different3);
 	}
-	
+
 	@Test
 	public void testHashCode() {
 		LockKey equal1 = new LockKey("p1", "b", true); //$NON-NLS-1$ //$NON-NLS-2$

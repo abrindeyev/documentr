@@ -1,6 +1,6 @@
 /*
 documentr - Edit, maintain, and present software documentation on the web.
-Copyright (C) 2012 Maik Schreiber
+Copyright (C) 2012-2013 Maik Schreiber
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@ import org.eclipse.jgit.lib.Repository;
 
 public final class RepositoryUtil {
 	private RepositoryUtil() {}
-	
+
 	public static void closeQuietly(Repository repo) {
 		if (repo != null) {
 			try {
@@ -33,7 +33,7 @@ public final class RepositoryUtil {
 			}
 		}
 	}
-	
+
 	public static File getWorkingDir(Repository repo) {
 		return repo.getDirectory().getParentFile();
 	}

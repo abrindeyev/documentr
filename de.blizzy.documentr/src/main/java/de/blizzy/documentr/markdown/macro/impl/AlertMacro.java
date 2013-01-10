@@ -1,6 +1,6 @@
 /*
 documentr - Edit, maintain, and present software documentation on the web.
-Copyright (C) 2012 Maik Schreiber
+Copyright (C) 2012-2013 Maik Schreiber
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@ public class AlertMacro implements IMacroRunnable {
 	@Override
 	public String getHtml(IMacroContext macroContext) {
 		String body = StringUtils.defaultString(macroContext.getBody());
-		
+
 		String type = macroContext.getParameters();
 		String typeClass = StringUtils.EMPTY;
 		if (StringUtils.isNotBlank(type)) {

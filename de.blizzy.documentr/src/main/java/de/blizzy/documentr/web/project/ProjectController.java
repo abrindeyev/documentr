@@ -1,6 +1,6 @@
 /*
 documentr - Edit, maintain, and present software documentation on the web.
-Copyright (C) 2012 Maik Schreiber
+Copyright (C) 2012-2013 Maik Schreiber
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -65,18 +65,18 @@ public class ProjectController {
 		model.addAttribute("projectForm", form); //$NON-NLS-1$
 		return "/project/edit"; //$NON-NLS-1$
 	}
-	
+
 	@RequestMapping(value="/save", method=RequestMethod.POST)
 	@PreAuthorize("projectExists(#form.name) ? " +
 			"hasProjectPermission(#form.name, EDIT_PROJECT) : " +
 			"hasApplicationPermission(EDIT_PROJECT)")
 	public String saveProject(@ModelAttribute @Valid ProjectForm form, BindingResult bindingResult,
 			Authentication authentication) throws IOException, GitAPIException {
-		
+
 		if (bindingResult.hasErrors()) {
 			return "/project/edit"; //$NON-NLS-1$
 		}
-		
+
 		ILockedRepository repo = null;
 		try {
 			User user = userStore.getUser(authentication.getName());

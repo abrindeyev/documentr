@@ -1,6 +1,6 @@
 /*
 documentr - Edit, maintain, and present software documentation on the web.
-Copyright (C) 2012 Maik Schreiber
+Copyright (C) 2012-2013 Maik Schreiber
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@ import de.blizzy.documentr.system.SystemSettingsStore;
 
 public class MacroContextTest extends AbstractDocumentrTest {
 	private static final String MACRO = "macro"; //$NON-NLS-1$
-	
+
 	@Mock
 	private BeanFactory beanFactory;
 	@Mock
@@ -50,10 +50,10 @@ public class MacroContextTest extends AbstractDocumentrTest {
 	public void setUp() {
 		MacroContext ctx = new MacroContext(MACRO, "params", "body", htmlSerializerContext); //$NON-NLS-1$ //$NON-NLS-2$
 		Whitebox.setInternalState(ctx, pageStore, permissionEvaluator, systemSettingsStore);
-		
+
 		when(beanFactory.getBean(MacroContext.ID, MACRO, "params", "body", htmlSerializerContext)) //$NON-NLS-1$ //$NON-NLS-2$
 			.thenReturn(ctx);
-		
+
 		context = MacroContext.create(MACRO, "params", "body", htmlSerializerContext, beanFactory); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 

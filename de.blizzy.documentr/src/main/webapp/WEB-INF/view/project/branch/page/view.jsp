@@ -1,6 +1,6 @@
 <%--
 documentr - Edit, maintain, and present software documentation on the web.
-Copyright (C) 2012 Maik Schreiber
+Copyright (C) 2012-2013 Maik Schreiber
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -23,11 +23,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="d" uri="http://documentr.org/tld/documentr" %>
 <%@ taglib prefix="dt" tagdir="/WEB-INF/tags" %>
-
-<%
-long random = (long) (Math.random() * Long.MAX_VALUE);
-pageContext.setAttribute("random", Long.valueOf(random)); //$NON-NLS-1$
-%>
 
 <sec:authorize access="hasPagePermission(#projectName, #branchName, #path, VIEW)">
 
@@ -97,7 +92,7 @@ function toggleHideFloatingElements(hide) {
 function showDeleteDialog() {
 	require(['documentr/dialog'], function(dialog) {
 		dialog.openMessageDialog('<spring:message code="title.deletePage"/>',
-			<c:set var="text"><spring:message code="deletePageX.html" arguments="${title}" argumentSeparator="__DUMMY__SEPARATOR__${random}__"/></c:set>
+			<c:set var="text"><spring:message code="deletePageX.html" arguments="${title}" argumentSeparator="__DUMMY__SEPARATOR__"/></c:set>
 			'<c:out value="${fn:replace(text, &quot;'&quot;, &quot;\\\\'&quot;)}" escapeXml="false"/>', [
 			{
 				text: '<spring:message code="button.delete"/>',
@@ -375,23 +370,47 @@ function cancelInlineEditor() {
 function startInlineEditor(textEl, range) {
 	cancelInlineEditor();
 
+	var editor = null;
+
+	require(['ace'], function(ace) {
+		var ed = $('#inlineEditorForm').data('editor');
+		if (!documentr.isSomething(ed)) {
+			ed = ace.edit('editor');
+			$('#inlineEditorForm').data('editor', ed);
+			ed.setTheme('ace/theme/chrome');
+			ed.session.setMode('ace/mode/markdown');
+			ed.setDisplayIndentGuides(true);
+			ed.renderer.setShowGutter(false);
+			ed.session.setUseWrapMode(true);
+			ed.session.setWrapLimitRange(null, null);
+			ed.renderer.setShowPrintMargin(false);
+			ed.session.setUseSoftTabs(false);
+			ed.setHighlightSelectedWord(false);
+			ed.setHighlightActiveLine(false);
+		}
+		editor = ed;
+	});
+
 	$.ajax({
 		url: '<c:url value="/page/markdownInRange/${projectName}/${branchName}/${d:toUrlPagePath(path)}/"/>' + range + '/' + currentCommit + '/json',
 		type: 'GET',
 		dataType: 'json',
 		success: function(result) {
-			var formEl = $('#inlineEditorForm');
-			formEl.hide();
-			formEl.detach();
-			$(textEl).after(formEl);
-			$(textEl).hide();
-			toggleHideFloatingElements(true);
-			formEl.data('textEl', textEl);
-			var editor = formEl.data('editor');
-			editor.setValue(result.markdown);
-			formEl.show();
-			editor.focus();
-			editor.moveCursorTo(0, 0);
+			documentr.waitFor(function() {
+				return documentr.isSomething(editor);
+			}, function() {
+				var formEl = $('#inlineEditorForm');
+				formEl.hide();
+				formEl.detach();
+				$(textEl).after(formEl);
+				$(textEl).hide();
+				toggleHideFloatingElements(true);
+				formEl.data('textEl', textEl);
+				editor.setValue(result.markdown);
+				formEl.show();
+				editor.focus();
+				editor.moveCursorTo(0, 0);
+			});
 		}
 	});
 }
@@ -448,28 +467,161 @@ function restoreOldVersion() {
 <sec:authorize access="isAuthenticated()">
 
 function showChangesDialog() {
+	var dlg = $('#changes-dialog');
+	var editor = null;
+
+	require(['ace'], function(ace) {
+		var ed = dlg.data('editor');
+		if (!documentr.isSomething(ed)) {
+			ed = ace.edit('changes-editor');
+			dlg.data('editor', ed);
+			ed.setTheme('ace/theme/chrome');
+			ed.session.setMode('ace/mode/markdown');
+			ed.setReadOnly(true);
+			ed.setDisplayIndentGuides(true);
+			ed.renderer.setShowGutter(false);
+			ed.session.setUseWrapMode(true);
+			ed.session.setWrapLimitRange(null, null);
+			ed.renderer.setShowPrintMargin(false);
+			ed.session.setUseSoftTabs(false);
+			ed.setHighlightSelectedWord(false);
+			ed.setHighlightActiveLine(false);
+			ed.renderer.hideCursor();
+		}
+		editor = ed;
+	});
+
 	require(['documentr/diffMarkdown', 'documentr/dialog']);
 	$.ajax({
 		url: '<c:url value="/page/markdown/${projectName}/${branchName}/${d:toUrlPagePath(path)}/json?versions=latest,previous"/>',
 		type: 'GET',
 		dataType: 'json',
-		success: function(result) {
-			var previous = documentr.isSomething(result.previous) ? result[result.previous] : '';
-			require(['documentr/diffMarkdown', 'documentr/dialog'], function(diffMarkdown) {
-				var html = diffMarkdown.diff(previous, result[result.latest]);
-				$('#changes-dialog-body').html(html);
-				if (documentr.isSomething(result.previous)) {
-					$('#changes-dialog').data('previousCommit', result.previous);
-					$('#restore-old-commit-button').show();
-				} else {
-					$('#changes-dialog').data('previousCommit', null);
-					$('#restore-old-commit-button').hide();
-				}
-				$('#changes-dialog').showModal();
+		success: function(markdownResult) {
+			require(['ace', 'documentr/diffMarkdown', 'documentr/dialog'], function(ace, diffMarkdown) {
+				var previous = documentr.isSomething(markdownResult.previous) ? markdownResult[markdownResult.previous] : '';
+				var diffResult = diffMarkdown.diff(previous, markdownResult[markdownResult.latest]);
+
+				documentr.waitFor(function() {
+					return documentr.isSomething(editor);
+				}, function() {
+					$.each(editor.session.getMarkers(false), function(idx, marker) {
+						if ((marker.clazz === 'editor-marker-insert') || (marker.clazz === 'editor-marker-delete')) {
+							editor.session.removeMarker(marker.id);
+						}
+					});
+				
+					editor.setValue(diffResult.text);
+					var Range = ace.require('ace/range').Range;
+					$.each(diffResult.markers, function(idx, marker) {
+						var range = new Range(marker.startLine, marker.startColumn, marker.endLine, marker.endColumn);
+						editor.session.addMarker(range, marker.insert ? 'editor-marker-insert' : 'editor-marker-delete', 'text');
+					});
+
+					if (documentr.isSomething(markdownResult.previous)) {
+						$('#changes-dialog').data('previousCommit', markdownResult.previous);
+						$('#restore-old-commit-button').show();
+					} else {
+						$('#changes-dialog').data('previousCommit', null);
+						$('#restore-old-commit-button').hide();
+					}
+
+					editor.focus();
+					editor.moveCursorTo(0, 0);
+
+					dlg.showModal();
+				});
 			});
 		}
 	});
 }
+
+<sec:authorize access="hasPagePermissionInOtherBranches(#projectName, #branchName, #path, VIEW)">
+function showCompareWithBranchDialog() {
+	compareWithBranchSelected();
+}
+
+function compareWithBranchSelected() {
+	$('#compareWithBranch').attr('disabled', 'disabled');
+	var branch = $('#compareWithBranch').val();
+	var markdown = {};
+	var dlg = $('#compare-with-branch-dialog');
+	var editor = null;
+
+	require(['ace'], function(ace) {
+		var ed = dlg.data('editor');
+		if (!documentr.isSomething(ed)) {
+			ed = ace.edit('compare-with-branch-editor');
+			dlg.data('editor', ed);
+			ed.setTheme('ace/theme/chrome');
+			ed.session.setMode('ace/mode/markdown');
+			ed.setReadOnly(true);
+			ed.setDisplayIndentGuides(true);
+			ed.renderer.setShowGutter(false);
+			ed.session.setUseWrapMode(true);
+			ed.session.setWrapLimitRange(null, null);
+			ed.renderer.setShowPrintMargin(false);
+			ed.session.setUseSoftTabs(false);
+			ed.setHighlightSelectedWord(false);
+			ed.setHighlightActiveLine(false);
+			ed.renderer.hideCursor();
+		}
+		editor = ed;
+	});
+
+	require(['documentr/diffMarkdown', 'documentr/dialog']);
+	
+	markdown.current = $('body').data('currentMarkdown');
+	if (!documentr.isSomething(markdown.current)) {
+		$.ajax({
+			url: '<c:url value="/page/markdown/${projectName}/${branchName}/${d:toUrlPagePath(path)}/json?versions=latest"/>',
+			type: 'GET',
+			dataType: 'json',
+			success: function(result) {
+				markdown.current = result[result.latest];
+				$('body').data('currentMarkdown', markdown.current);
+			}
+		});
+	}
+	$.ajax({
+		url: '<c:url value="/page/markdown/${projectName}/__BRANCH__/${d:toUrlPagePath(path)}/json?versions=latest"/>'.replace(/__BRANCH__/, branch),
+		type: 'GET',
+		dataType: 'json',
+		success: function(result) {
+			if (documentr.isSomething(result.latest)) {
+				markdown.other = result[result.latest];
+			}
+			markdown.otherLoaded = true;
+		}
+	});
+	documentr.waitFor(function() {
+		return documentr.isSomething(editor) &&
+			documentr.isSomething(markdown.current) && documentr.isSomething(markdown.otherLoaded);
+	}, function() {
+		require(['documentr/diffMarkdown', 'documentr/dialog'], function(diffMarkdown) {
+			$.each(editor.session.getMarkers(false), function(idx, marker) {
+				if ((marker.clazz === 'editor-marker-insert') || (marker.clazz === 'editor-marker-delete')) {
+					editor.session.removeMarker(marker.id);
+				}
+			});
+
+			var markdownOther = documentr.isSomething(markdown.other) ? markdown.other : '';
+			var diffResult = diffMarkdown.diff(markdown.current, markdownOther);
+			editor.setValue(diffResult.text);
+			var Range = ace.require('ace/range').Range;
+			$.each(diffResult.markers, function(idx, marker) {
+				var range = new Range(marker.startLine, marker.startColumn, marker.endLine, marker.endColumn);
+				editor.session.addMarker(range, marker.insert ? 'editor-marker-insert' : 'editor-marker-delete', 'text');
+			});
+
+			editor.focus();
+			editor.moveCursorTo(0, 0);
+
+			dlg.showModal();
+			$('#compareWithBranch').removeAttr('disabled');
+		});
+	});
+}
+</sec:authorize>
 
 function subscribe() {
 	require(['documentr/dialog']);
@@ -511,33 +663,23 @@ function unsubscribe() {
 
 </sec:authorize>
 
-$(function() {
-	<sec:authorize access="isAuthenticated()">
-		if (window.location.hash === '#changes') {
-			showChangesDialog();
-		}
-	</sec:authorize>
-	
-	<sec:authorize access="hasPagePermission(#projectName, #branchName, #path, EDIT_PAGE)">
-		hookupInlineEditorToolbar();
-		hookupSplitCursor();
+<sec:authorize access="isAuthenticated() or
+	hasPagePermission(#projectName, #branchName, #path, EDIT_PAGE)">
 
-		require(['ace'], function(ace) {
-			var editor = ace.edit('editor');
-			$('#inlineEditorForm').data('editor', editor);
-			editor.setTheme('ace/theme/chrome');
-			editor.session.setMode('ace/mode/markdown');
-			editor.setDisplayIndentGuides(true);
-			editor.renderer.setShowGutter(false);
-			editor.session.setUseWrapMode(true);
-			editor.session.setWrapLimitRange(null, null);
-			editor.renderer.setShowPrintMargin(false);
-			editor.session.setUseSoftTabs(false);
-			editor.setHighlightSelectedWord(false);
-			editor.setHighlightActiveLine(false);
-		});
-	</sec:authorize>
-});
+	$(function() {
+		<sec:authorize access="isAuthenticated()">
+			<%-- subscription mails entry point --%>
+			if (window.location.hash === '#changes') {
+				showChangesDialog();
+			}
+		</sec:authorize>
+		
+		<sec:authorize access="hasPagePermission(#projectName, #branchName, #path, EDIT_PAGE)">
+			hookupInlineEditorToolbar();
+			hookupSplitCursor();
+		</sec:authorize>
+	});
+</sec:authorize>
 
 </dt:pageJS>
 
@@ -611,6 +753,9 @@ $(function() {
 				<dt:dropdownEntry divider="true">
 					<sec:authorize access="isAuthenticated()">
 						<li><a href="<c:url value="/page/changes/${projectName}/${branchName}/${d:toUrlPagePath(path)}"/>"><i class="icon-book"></i> <spring:message code="button.changes"/></a></li>
+						<sec:authorize access="hasPagePermissionInOtherBranches(#projectName, #branchName, #path, VIEW)">
+							<li><a href="javascript:void(showCompareWithBranchDialog());"><i class="icon-book"></i> <spring:message code="button.compareWithBranch"/></a></li>
+						</sec:authorize>
 						<c:choose>
 							<c:when test="${!d:isSubscribed(projectName, branchName, path)}">
 								<li><a href="javascript:void(subscribe());"><i class="icon-envelope"></i> <spring:message code="button.subscribe"/></a>
@@ -759,7 +904,9 @@ $(function() {
 			<button class="close" onclick="$('#changes-dialog').hideModal();">&#x00D7</button>
 			<h3><spring:message code="title.changes"/></h3>
 		</div>
-		<div class="modal-body" id="changes-dialog-body"></div>
+		<div class="modal-body" id="changes-dialog-body">
+			<div class="editor-wrapper"><div id="changes-editor" class="code-view"></div></div>
+		</div>
 		<div class="modal-footer">
 			<sec:authorize access="hasPagePermission(#projectName, #branchName, #path, EDIT_PAGE)">
 				<a href="javascript:void(restoreOldVersion());" id="restore-old-commit-button" class="btn btn-warning"><spring:message code="button.restoreOldVersion"/></a>
@@ -767,6 +914,31 @@ $(function() {
 			<a href="javascript:void($('#changes-dialog').hideModal());" class="btn"><spring:message code="button.close"/></a>
 		</div>
 	</div>
+	
+	<sec:authorize access="hasPagePermissionInOtherBranches(#projectName, #branchName, #path, VIEW)">
+		<div class="modal modal-wide" id="compare-with-branch-dialog" style="display: none;">
+			<div class="modal-header">
+				<button class="close" onclick="$('#compare-with-branch-dialog').hideModal();">&#x00D7</button>
+				<h3><spring:message code="title.compareWithBranch"/></h3>
+				<form class="form-inline">
+					<label for="compareWithBranch"><strong><spring:message code="label.compareWithBranch"/>:</strong></label>
+					<select id="compareWithBranch" class="input-large" onchange="compareWithBranchSelected()">
+						<c:forEach var="branch" items="${branches}">
+							<c:if test="${branch ne branchName}">
+								<option value="${branch}"><c:out value="${branch}"/></option>
+							</c:if>
+						</c:forEach>
+					</select>
+				</form>
+			</div>
+			<div class="modal-body" id="compare-with-branch-dialog-body">
+				<div class="editor-wrapper"><div id="compare-with-branch-editor" class="code-view"></div></div>
+			</div>
+			<div class="modal-footer">
+				<a href="javascript:void($('#compare-with-branch-dialog').hideModal());" class="btn"><spring:message code="button.close"/></a>
+			</div>
+		</div>
+	</sec:authorize>
 </sec:authorize>
 
 </dt:page>

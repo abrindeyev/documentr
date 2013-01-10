@@ -1,6 +1,6 @@
 /*
 documentr - Edit, maintain, and present software documentation on the web.
-Copyright (C) 2012 Maik Schreiber
+Copyright (C) 2012-2013 Maik Schreiber
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -35,7 +35,7 @@ public final class TestPageUtil {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	public static void setParentPagePath(Page page, String parentPagePath) {
 		page.setParentPagePath(parentPagePath);
 	}

@@ -1,6 +1,6 @@
 /*
 documentr - Edit, maintain, and present software documentation on the web.
-Copyright (C) 2012 Maik Schreiber
+Copyright (C) 2012-2013 Maik Schreiber
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -87,24 +87,24 @@ public class NeighborsMacroTest extends AbstractDocumentrTest {
 	public void setUp() throws IOException {
 		when(htmlSerializerContext.getPageUri(anyString())).then(new Answer<String>() {
 			@Override
-			public String answer(InvocationOnMock invocation) throws Throwable {
+			public String answer(InvocationOnMock invocation) {
 				return "/" + invocation.getArguments()[0]; //$NON-NLS-1$
 			}
 		});
-		
+
 		setupPages();
 
 		setupPagePermissions();
-		
+
 		when(context.getPageStore()).thenReturn(pageStore);
 		when(context.getPermissionEvaluator()).thenReturn(permissionEvaluator);
-		
+
 		runnable = new NeighborsMacro();
 	}
-	
+
 	private void setupPages() throws IOException {
 		setupPages(PAGES);
-		
+
 		for (String page : PAGES) {
 			List<String> childPages = Lists.newArrayList();
 			String childPagePrefix = page + "/"; //$NON-NLS-1$
@@ -120,7 +120,7 @@ public class NeighborsMacroTest extends AbstractDocumentrTest {
 			when(pageStore.listChildPagePaths(PROJECT, BRANCH, page)).thenReturn(childPages);
 		}
 	}
-	
+
 	private void setupPagePermissions() {
 		when(permissionEvaluator.hasPagePermission(Matchers.<Authentication>any(),
 					eq(PROJECT), eq(BRANCH), notEq(INACCESSIBLE_PAGE_PATH), same(Permission.VIEW)))
@@ -129,7 +129,7 @@ public class NeighborsMacroTest extends AbstractDocumentrTest {
 					eq(PROJECT), eq(BRANCH), eq(INACCESSIBLE_PAGE_PATH), same(Permission.VIEW)))
 				.thenReturn(false);
 	}
-	
+
 	@Test
 	public void getHtml() {
 		when(htmlSerializerContext.getProjectName()).thenReturn(PROJECT);
@@ -137,7 +137,7 @@ public class NeighborsMacroTest extends AbstractDocumentrTest {
 		when(htmlSerializerContext.getPagePath()).thenReturn(DocumentrConstants.HOME_PAGE_NAME + "/foo/bar"); //$NON-NLS-1$
 
 		when(context.getHtmlSerializerContext()).thenReturn(htmlSerializerContext);
-		
+
 		// this is the HTML for home/foo/bar
 		@SuppressWarnings("nls")
 		String html =

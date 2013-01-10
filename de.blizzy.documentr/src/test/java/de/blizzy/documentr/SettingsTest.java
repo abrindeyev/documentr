@@ -1,6 +1,6 @@
 /*
 documentr - Edit, maintain, and present software documentation on the web.
-Copyright (C) 2012 Maik Schreiber
+Copyright (C) 2012-2013 Maik Schreiber
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -37,7 +37,7 @@ public class SettingsTest extends AbstractDocumentrTest {
 	@Test
 	public void init() {
 		when(servletContext.getInitParameter("documentr.dataDir")).thenReturn("dataDir"); //$NON-NLS-1$ //$NON-NLS-2$
-		
+
 		settings.init();
 		assertEquals(new File("dataDir"), settings.getDocumentrDataDir()); //$NON-NLS-1$
 	}
@@ -47,7 +47,7 @@ public class SettingsTest extends AbstractDocumentrTest {
 		System.setProperty("documentr.dataDir", "."); //$NON-NLS-1$ //$NON-NLS-2$
 		settings.init();
 		System.setProperty("documentr.dataDir", "nonexistent"); //$NON-NLS-1$ //$NON-NLS-2$
-		
+
 		assertEquals(new File("."), settings.getDocumentrDataDir()); //$NON-NLS-1$
 	}
 }

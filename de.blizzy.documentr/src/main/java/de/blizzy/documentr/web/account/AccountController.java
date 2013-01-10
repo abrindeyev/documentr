@@ -1,6 +1,6 @@
 /*
 documentr - Edit, maintain, and present software documentation on the web.
-Copyright (C) 2012 Maik Schreiber
+Copyright (C) 2012-2013 Maik Schreiber
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -35,7 +35,7 @@ import de.blizzy.documentr.access.UserStore;
 public class AccountController {
 	@Autowired
 	private UserStore userStore;
-	
+
 	@RequestMapping(value="/myAccount", method=RequestMethod.GET)
 	@PreAuthorize("isAuthenticated()")
 	public String getMyAccount() {
@@ -47,7 +47,7 @@ public class AccountController {
 	public String getMyOpenIds() {
 		return "/account/openId"; //$NON-NLS-1$
 	}
-	
+
 	@RequestMapping(value="/removeOpenId", method=RequestMethod.GET)
 	@PreAuthorize("isAuthenticated()")
 	public String removeOpenId(@RequestParam String openId, Authentication authentication) throws IOException {

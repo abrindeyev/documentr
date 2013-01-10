@@ -1,6 +1,6 @@
 /*
 documentr - Edit, maintain, and present software documentation on the web.
-Copyright (C) 2012 Maik Schreiber
+Copyright (C) 2012-2013 Maik Schreiber
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -39,10 +39,10 @@ class Version implements Comparable<Version> {
 		this.minor = minor;
 		this.maintenance = maintenance;
 	}
-	
+
 	static Version fromString(String s) {
 		Assert.isTrue(s.matches("^[0-9]+\\.[0-9]+\\.[0-9]+(-.+)?$")); //$NON-NLS-1$
-		
+
 		s = s.replaceFirst("-.*$", StringUtils.EMPTY); //$NON-NLS-1$
 		String[] parts = s.split("\\."); //$NON-NLS-1$
 		return new Version(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]), Integer.parseInt(parts[2]));
@@ -56,7 +56,7 @@ class Version implements Comparable<Version> {
 			.append(maintenance, v.maintenance)
 			.toComparison();
 	}
-	
+
 	@Override
 	public String toString() {
 		return String.valueOf(major) + "." + String.valueOf(minor) + "." + String.valueOf(maintenance); //$NON-NLS-1$ //$NON-NLS-2$

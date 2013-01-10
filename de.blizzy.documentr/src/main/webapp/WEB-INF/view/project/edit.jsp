@@ -1,6 +1,6 @@
 <%--
 documentr - Edit, maintain, and present software documentation on the web.
-Copyright (C) 2012 Maik Schreiber
+Copyright (C) 2012-2013 Maik Schreiber
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -37,7 +37,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 <div class="page-header"><h1><spring:message code="title.editProject"/></h1></div>
 
-<p>
 <c:set var="action"><c:url value="/project/save"/></c:set>
 <form:form commandName="projectForm" action="${action}" method="POST" cssClass="well form-inline">
 	<fieldset>
@@ -52,7 +51,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		</div>
 	</fieldset>
 </form:form>
-</p>
 
 </dt:page>
 

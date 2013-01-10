@@ -1,6 +1,6 @@
 /*
 documentr - Edit, maintain, and present software documentation on the web.
-Copyright (C) 2012 Maik Schreiber
+Copyright (C) 2012-2013 Maik Schreiber
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -36,7 +36,7 @@ public class Settings {
 	private ServletContext servletContext;
 	@Getter
 	private File documentrDataDir;
-	
+
 	@PostConstruct
 	public void init() {
 		String dataDirParam = getInitParam("documentr.dataDir"); //$NON-NLS-1$

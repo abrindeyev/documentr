@@ -1,6 +1,6 @@
 /*
 documentr - Edit, maintain, and present software documentation on the web.
-Copyright (C) 2012 Maik Schreiber
+Copyright (C) 2012-2013 Maik Schreiber
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -63,7 +63,7 @@ public class SubscriptionMailer {
 	private SubscriptionStore subscriptionStore;
 	@Autowired
 	private MailSenderFactory mailSenderFactory;
-	
+
 	@Subscribe
 	public void pageChanged(PageChangedEvent event) {
 		final String projectName = event.getProjectName();
@@ -88,7 +88,7 @@ public class SubscriptionMailer {
 
 	private void sendNotifications(String projectName, String branchName, String path)
 			throws IOException {
-		
+
 		Map<String, String> settings = systemSettingsStore.getSettings();
 		String senderEmail = settings.get(SystemSettingsStore.MAIL_SENDER_EMAIL);
 		String senderName = settings.get(SystemSettingsStore.MAIL_SENDER_NAME);
@@ -113,7 +113,7 @@ public class SubscriptionMailer {
 							Util.toUrlPagePath(path) + "#changes"); //$NON-NLS-1$
 					String text = messageSource.getMessage("mail.pageChanged.text", //$NON-NLS-1$
 							new Object[] { title, pageUrl, changesUrl }, locale);
-		
+
 					sendMail(subject, text, senderEmail, senderName, subscriberEmails, sender);
 				} else {
 					log.info("no subscribers, not sending mail"); //$NON-NLS-1$

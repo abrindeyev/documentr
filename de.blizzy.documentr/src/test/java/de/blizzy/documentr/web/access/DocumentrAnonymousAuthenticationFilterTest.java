@@ -1,6 +1,6 @@
 /*
 documentr - Edit, maintain, and present software documentation on the web.
-Copyright (C) 2012 Maik Schreiber
+Copyright (C) 2012-2013 Maik Schreiber
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -43,11 +43,11 @@ public class DocumentrAnonymousAuthenticationFilterTest extends AbstractDocument
 	private HttpServletRequest request;
 	@InjectMocks
 	private DocumentrAnonymousAuthenticationFilter filter;
-	
+
 	@Test
 	public void createAuthentication() throws IOException {
 		when(authenticationFactory.create(anyString())).thenReturn(authentication);
-		
+
 		Authentication result = filter.createAuthentication(request);
 		assertSame(authentication, result);
 	}

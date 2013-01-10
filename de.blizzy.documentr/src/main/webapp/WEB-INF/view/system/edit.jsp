@@ -1,6 +1,6 @@
 <%--
 documentr - Edit, maintain, and present software documentation on the web.
-Copyright (C) 2012 Maik Schreiber
+Copyright (C) 2012-2013 Maik Schreiber
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -58,7 +58,6 @@ $(function() {
 
 <div class="page-header"><h1><spring:message code="title.systemSettings"/></h1></div>
 
-<p>
 <c:set var="action"><c:url value="/system/save"/></c:set>
 <form:form commandName="systemSettingsForm" action="${action}" method="POST" cssClass="well form-horizontal" onsubmit="clearDirty(); return true;">
 	<fieldset>
@@ -169,7 +168,6 @@ $(function() {
 		<input type="submit" class="btn btn-primary" value="<spring:message code="button.save"/>"/>
 	</div>
 </form:form>
-</p>
 
 </dt:page>
 

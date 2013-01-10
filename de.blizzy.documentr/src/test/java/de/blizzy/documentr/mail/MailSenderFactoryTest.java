@@ -1,6 +1,6 @@
 /*
 documentr - Edit, maintain, and present software documentation on the web.
-Copyright (C) 2012 Maik Schreiber
+Copyright (C) 2012-2013 Maik Schreiber
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -38,7 +38,7 @@ public class MailSenderFactoryTest extends AbstractDocumentrTest {
 	private SystemSettingsStore systemSettingsStore;
 	@InjectMocks
 	private MailSenderFactory mailSenderFactory;
-	
+
 	@Test
 	public void createSender() {
 		Map<String, String> settings = Maps.newHashMap();
@@ -48,7 +48,7 @@ public class MailSenderFactoryTest extends AbstractDocumentrTest {
 		JavaMailSender sender = mailSenderFactory.createSender();
 		assertEquals("host", Whitebox.getInternalState(sender, "host")); //$NON-NLS-1$ //$NON-NLS-2$
 		assertEquals(25, (int) ((Integer) Whitebox.getInternalState(sender, "port"))); //$NON-NLS-1$
-		
+
 
 		settings.remove(SystemSettingsStore.MAIL_HOST_NAME);
 		assertNull(mailSenderFactory.createSender());

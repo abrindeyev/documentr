@@ -1,6 +1,6 @@
 <%--
 documentr - Edit, maintain, and present software documentation on the web.
-Copyright (C) 2012 Maik Schreiber
+Copyright (C) 2012-2013 Maik Schreiber
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -29,16 +29,17 @@ var require = {
 			'jquery.fileupload': 'jquery-file-upload-20121221/jquery.fileupload',
 			'jquery.ui.widget': 'jquery-file-upload-20121221/vendor/jquery.ui.widget',
 			slimbox: 'slimbox-2.04',
-			'jquery.jstree': 'jquery.jstree-pre-1.0-fix-1/jquery.jstree-pre-1.0-fix-1.min',
-			ace: 'ace-1.0.0/ace',
-			zxcvbn: 'zxcvbn-20120416'
+			'jquery.jstree': 'jquery.jstree-pre-1.0-fix-2/jquery.jstree',
+			ace: 'ace-20121217/ace',
+			zxcvbn: 'zxcvbn-20120416',
+			'jquery.select2': 'select2-3.2.min'
 		}
 	},
 	shim: {
 		'diff_match_patch-20120106': {
 			exports: 'diff_match_patch'
 		},
-		'ace-1.0.0/ace': {
+		'ace-20121217/ace': {
 			exports: 'ace'
 		},
 		'zxcvbn-20120416': {
